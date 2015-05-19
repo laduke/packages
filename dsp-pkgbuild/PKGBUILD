@@ -1,0 +1,33 @@
+# Maintainer:  tl <travisladuke@gmail.com>
+# Contributor: todo
+
+pkgname=bmc0-dsp-git
+_gitname=dsp
+pkgver=r193.6b1545f
+pkgrel=1
+pkgdesc="An audio processing program with an interactive mode."
+arch=('armv6h')
+url="http://github.com/bmc0/dsp"
+license=()
+depends=('ladspa')
+makedepends=('git' 'pkgconfig')
+provides=('dsp')
+conflicts=()
+source=('dsp::git+https://github.com/bmc0/dsp.git')
+md5sums=('SKIP')
+
+pkgver() {
+  cd $_gitname
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd $_gitname
+
+  make
+}
+
+package() {
+  cd $_gitname
+  make DESTDIR="$pkgdir"/ PREFIX=/usr install 
+}
